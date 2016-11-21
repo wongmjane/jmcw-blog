@@ -9,6 +9,8 @@
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
+<link rel="import" href="../../bower_components/ga-tracker/ga-tracker.html">
+
 <dom-module id="jmcw-blog-app">
   <style include="iron-flex"></style>
   <template>
@@ -62,6 +64,9 @@
     <platinum-https-redirect></platinum-https-redirect>
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+    <ga-tracker name="jmcw-blog" key="UA-68121577-6" requires="displayfeatures linkid"></ga-tracker>
+
     <app-header-layout fullbleed>
 
         <app-header condenses reveals shadow>
