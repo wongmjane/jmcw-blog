@@ -1,13 +1,91 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/platinum-https-redirect/platinum-https-redirect.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <dom-module id="jmcw-blog-app">
+  <style include="iron-flex"></style>
   <template>
     <style>
       :host {
         display: block;
+        font-family: 'Libre Franklin', sans-serif;
+      }
+      .headerbar {
+        color: black;
+        height: 80px;
+      }
+      .headerbar [main-title] {
+        text-align: center;
+      }
+      .headerbar .logo {
+        font-family: 'Space Mono', monospace;
+        text-shadow: -1.5px -1.5px 0 #F06292,
+                      1.5px  1.5px 0 #039BE5,
+                     -1.5px  1.5px 0 #5E35B1,
+                      1.5px -1.5px 0 #BA68C8;
+        font-size: 28px;
+        color: white;
+        font-weight: bold;
+      }
+      .headerbar .description {
+        font-family: 'Space Mono', monospace;
+        font-size: 14px;
+        color: #BDBDBD;
+        line-height: 1em;
+      }
+      .funcbar {
+        background: white;
+        color: black;
+      }
+      paper-spinner {
+        --paper-spinner-layer-1-color: #2196F3;
+        --paper-spinner-layer-2-color: #9C27B0;
+        --paper-spinner-layer-3-color: #E91E63;
+        --paper-spinner-layer-4-color: #9C27B0;
+        --paper-spinner-stroke-width: 1px;
+      }
+      [content] {
+        padding-top: 2em;
+        background: #FAFAFA;
+        text-align: center;
+        font-size: 2em;
+        height: 100%;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+    <platinum-https-redirect></platinum-https-redirect>
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
+    <app-header-layout fullbleed>
+
+        <app-header condenses reveals shadow>
+        <app-toolbar class="headerbar">
+          <header main-title>
+            <div class="logo">jmcw.blog</div>
+            <div class="description">my digital time capsule</div>
+          </header>
+        </app-toolbar>
+        <!-- <app-toolbar sticky class="funcbar layout horizontal">
+          <div class="flex">JASD</div>
+          <paper-spinner></paper-spinner>
+        </app-toolbar> -->
+      </app-header>
+
+      <div content>
+        <p>
+          Under construction.
+        </p>
+        <p>
+          In the meanwhile, check out my <a href="https://instagram.com/wongmjane" target="_blank">Instagram</a>!
+        </p>
+      </div>
+    </app-header-layout>
   </template>
 
   <script>
@@ -21,6 +99,10 @@
           value: 'jmcw-blog-app',
         },
       },
+
+      ready: function() {
+        window.asdf=  this;
+      }
 
     });
   </script>
