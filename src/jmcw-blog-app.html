@@ -49,11 +49,44 @@
         color: #BDBDBD;
         line-height: 1em;
       }
+      .linkbar {
+        background: #00BCD4;
+      }
+      .linkbar div {
+        width: 100%;
+        text-align: center;
+      }
+      .linkbar div a {
+        display: inline-block;
+        color: white;
+        text-decoration: none;
+        padding: 0 1em;
+      }
+      .linkbar div a:hover {
+        background: #26C6DA;
+      }
+      .linkbar div a:visited {
+        color: white;
+      }
       [content] {
         padding-top: 2em;
         text-align: center;
         font-size: 2em;
         height: 100%;
+      }
+      footer app-toolbar {
+        height: 48px;
+        background: #E91E63;
+        box-shadow: 0 -2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 -1px 5px 0 rgba(0, 0, 0, 0.12),
+                    0 -3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+      footer app-toolbar div {
+        width: 100%;
+        text-align: center;
+        color: white;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75em;
       }
     </style>
 
@@ -65,12 +98,17 @@
 
     <app-header-layout fullbleed>
 
-        <app-header condenses reveals shadow>
+      <app-header condenses reveals shadow>
         <app-toolbar class="headerbar">
           <header main-title>
             <div class="logo">jmcw.blog</div>
             <div class="description">my digital time capsule</div>
           </header>
+        </app-toolbar>
+        <app-toolbar class="linkbar" sticky>
+          <div>
+            <template is="dom-repeat" items="[[links]]"><a href="[[item.href]]" target="_blank">[[item.title]]</a></template>
+          </div>
         </app-toolbar>
       </app-header>
 
@@ -78,17 +116,46 @@
         <p>
           Under construction.
         </p>
-        <p>
-          In the meanwhile, check out my <a href="https://instagram.com/wongmjane" target="_blank">Instagram</a>!
-        </p>
       </div>
+
+      <footer>
+        <app-toolbar>
+          <div>
+            Made with ❤ by Jane
+          </div>
+        </app-toolbar>
+      </footer>
     </app-header-layout>
   </template>
 
   <script>
     Polymer({
 
-      is: 'jmcw-blog-app'
+      is: 'jmcw-blog-app',
+
+      properties: {
+        links: {
+          type: Array,
+          value: [
+            {
+              title: "Facebook",
+              href: "https://facebook.com/wongmjane"
+            },
+            {
+              title: "Instagram",
+              href: "https://instagram.com/wongmjane"
+            },
+            {
+              title: "Github",
+              href: "https://github.com/wongmjane"
+            },
+            {
+              title: "Twitter",
+              href: "https://twitter.com/wongmjane"
+            }
+          ]
+        }
+      }
 
     });
   </script>
