@@ -58,15 +58,17 @@
       }
       .linkbar div a {
         display: inline-block;
-        color: white;
+        color: #E0F7FA;
         text-decoration: none;
-        padding: 0 1em;
+        padding: 0.125em 0.25em;
       }
-      .linkbar div a:hover {
-        background: #26C6DA;
+      .linkbar div a:not(:first-child)::before {
+        display: inline-block;
+        padding-right: 0.25em;
+        content: "·";
       }
       .linkbar div a:visited {
-        color: white;
+        color: #E0F7FA;
       }
       [content] {
         padding-top: 2em;
