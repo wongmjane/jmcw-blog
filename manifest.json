@@ -1,8 +1,0 @@
-{
-  "name": "jmcw.blog",
-  "short_name": "jmcw.blog",
-  "description": "JMCW's blog",
-  "start_url": "/",
-  "display": "standalone",
-  "theme_color": "#FFFFFF"
-}
