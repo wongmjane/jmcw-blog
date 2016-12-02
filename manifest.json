@@ -3,5 +3,6 @@
   "short_name": "jmcw.blog",
   "description": "JMCW's blog",
   "start_url": "/",
-  "display": "standalone"
+  "display": "standalone",
+  "theme_color": "#FFFFFF"
 }

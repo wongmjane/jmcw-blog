@@ -6,27 +6,41 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>jmcw-blog</title>
-    <meta name="description" content="jmcw-blog description">
+    <meta name="description" content="My name is Jane Manchun Wong. I am a student, a web developer, a Hongkonger and a queer woman. This is my digital time capsule.">
 
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="/manifest.json">
 
-    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
-    <link rel="import" href="/src/jmcw-blog/jmcw-blog-app.html">
-
-    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:300,400,700|Space+Mono:400,700" rel="stylesheet">
-
     <style>
     body {
       margin: 0;
-      font-family: sans-serif;
+      font-family: 'Dosis', sans-serif;
       min-height: 100vh;
       touch-action: manipulation;
     }
     </style>
+
+    <script>
+    window.Polymer = {
+      dom: 'shadow',
+      lazyRegister: true
+    }
+    </script>
+
+    <link rel="import" href="/src/jmcw-blog/jmcw-blog-app.html">
+
   </head>
   <body>
     <jmcw-blog-app></jmcw-blog-app>
+    <script async defer>
+    if (!( 'registerElement' in document
+        && 'import' in document.createElement('link')
+        && 'content' in document.createElement('template') )) {
+      document.body.appendChild((function(e){
+        e.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
+        return e;
+      })(document.createElement('script')));
+    }
+    </script>
   </body>
 </html>

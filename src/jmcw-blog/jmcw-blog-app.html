@@ -1,3 +1,5 @@
+<link rel="import" href="../jmcw-styles/fonts.html">
+
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/platinum-https-redirect/platinum-https-redirect.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
@@ -17,9 +19,15 @@
     <style>
       :host {
         display: block;
-        font-family: 'Libre Franklin', sans-serif;
+        font-family: 'Dosis', sans-serif;
+      }
+      :root {
+        background: #FAFAFA;
+        width: 100%;
+        height: 100%;
       }
       .headerbar {
+        background: white;
         color: black;
         height: 80px;
       }
@@ -42,25 +50,14 @@
         color: #BDBDBD;
         line-height: 1em;
       }
-      .funcbar {
-        background: white;
-        color: black;
-      }
-      paper-spinner {
-        --paper-spinner-layer-1-color: #2196F3;
-        --paper-spinner-layer-2-color: #9C27B0;
-        --paper-spinner-layer-3-color: #E91E63;
-        --paper-spinner-layer-4-color: #9C27B0;
-        --paper-spinner-stroke-width: 1px;
-      }
       [content] {
         padding-top: 2em;
-        background: #FAFAFA;
         text-align: center;
         font-size: 2em;
         height: 100%;
       }
     </style>
+    
     <platinum-https-redirect></platinum-https-redirect>
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
@@ -76,10 +73,6 @@
             <div class="description">my digital time capsule</div>
           </header>
         </app-toolbar>
-        <!-- <app-toolbar sticky class="funcbar layout horizontal">
-          <div class="flex">JASD</div>
-          <paper-spinner></paper-spinner>
-        </app-toolbar> -->
       </app-header>
 
       <div content>
@@ -96,18 +89,7 @@
   <script>
     Polymer({
 
-      is: 'jmcw-blog-app',
-
-      properties: {
-        prop1: {
-          type: String,
-          value: 'jmcw-blog-app',
-        },
-      },
-
-      ready: function() {
-        window.asdf=  this;
-      }
+      is: 'jmcw-blog-app'
 
     });
   </script>
