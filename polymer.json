@@ -1,6 +1,6 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/jmcw-blog/jmcw-blog-app.html",
+  "shell": "src/jmcw-blog-app.html",
   "fragments": [],
   "sources": [
     "src/**/*"
