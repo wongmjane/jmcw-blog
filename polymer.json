@@ -7,6 +7,6 @@
   ],
   "includeDependencies": [
     "bower_components/webcomponentsjs/webcomponents-lite.min.js",
-    "manifest.json"
+    "manifest_pwa.json"
   ]
 }
