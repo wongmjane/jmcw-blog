@@ -1,0 +1,12 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/jmcw-blog/jmcw-blog-app.html",
+  "fragments": [],
+  "sources": [
+    "src/**/*"
+  ],
+  "includeDependencies": [
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js",
+    "manifest.json"
+  ]
+}
