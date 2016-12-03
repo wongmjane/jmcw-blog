@@ -33,6 +33,12 @@
         return e;
       })(document.createElement('script')));
     }
+    if(!('Intl' in window)) {
+      document.body.appendChild((function(e){
+        e.src = '/bower_components/intl/dist/Intl.min.js';
+        return e;
+      })(document.createElement('script')));
+    }
     </script>
   </body>
 </html>

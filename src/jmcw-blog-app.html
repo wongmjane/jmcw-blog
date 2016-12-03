@@ -1,7 +1,9 @@
 <link rel="import" href="fonts.html">
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/platinum-https-redirect/platinum-https-redirect.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
@@ -49,31 +51,31 @@
         color: #BDBDBD;
         line-height: 1em;
       }
-      .linkbar {
+      .toolbar {
         background: #00BCD4;
       }
-      .linkbar div {
+      .toolbar div {
         width: 100%;
         text-align: center;
       }
-      .linkbar div a {
+      .toolbar div a {
         display: inline-block;
         color: #E0F7FA;
         text-decoration: none;
         padding: 0.125em 0.25em;
       }
-      .linkbar div a:not(:first-child)::before {
+      .toolbar div a:not(:first-child)::before {
         display: inline-block;
         padding-right: 0.25em;
         content: "·";
       }
-      .linkbar div a:visited {
+      .toolbar div a:visited {
         color: #E0F7FA;
       }
       [content] {
         padding-top: 2em;
         text-align: center;
-        font-size: 2em;
+        /*font-size: 2em;*/
         height: 100%;
       }
       footer app-toolbar {
@@ -96,6 +98,13 @@
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
+    <firebase-app
+      app="{{firebaseApp}}"
+      api-key="AIzaSyBXFF5crd3imvfK6iAJCx_CWjWTFbeiZak"
+      auth-domain="jmcw.blog"
+      database-url="https://jmcw-blog.firebaseio.com/"
+      name="jmcw-blog"
+      storage-bucket="jmcw-blog.appspot.com"></firebase-app>
     <ga-tracker name="jmcw-blog" key="UA-68121577-6" requires="displayfeatures linkid"></ga-tracker>
 
     <app-header-layout fullbleed>
@@ -104,10 +113,10 @@
         <app-toolbar class="headerbar">
           <header main-title>
             <div class="logo">jmcw.blog</div>
-            <div class="description">my digital time capsule</div>
+            <div class="description">{{localize('site-description')}}</div>
           </header>
         </app-toolbar>
-        <app-toolbar class="linkbar" sticky>
+        <app-toolbar class="toolbar" sticky>
           <div>
             <template is="dom-repeat" items="[[links]]"><a href="[[item.href]]" target="_blank">[[item.title]]</a></template>
           </div>
@@ -116,7 +125,7 @@
 
       <div content>
         <p>
-          Under construction.
+          Under Construction.
         </p>
       </div>
 
@@ -135,7 +144,20 @@
 
       is: 'jmcw-blog-app',
 
+      behaviors: [
+        Polymer.AppLocalizeBehavior
+      ],
+
       properties: {
+        language: {
+          type: String,
+          notify: true,
+          value: 'en-US'
+        },
+        useKeyIfMissing: {
+          type: Boolean,
+          value: true
+        },
         links: {
           type: Array,
           value: [
@@ -157,6 +179,10 @@
             }
           ]
         }
+      },
+
+      attached: function() {
+        this.loadResources(this.resolveUrl('locales.json'));
       }
 
     });
