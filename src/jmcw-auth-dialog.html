@@ -1,0 +1,296 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+
+<link rel="import" href="../bower_components/paper-styles/shadow.html">
+
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="jmcw-iconset.html">
+
+<dom-module id="jmcw-auth-dialog">
+
+  <style include="iron-flex"></style>
+
+  <template>
+
+    <style>
+
+    :host {
+      display: block;
+
+      --dialog-background-color: white;
+      --dialog-color: black;
+      --dialog-font-family: inherit;
+      --form-font-family: 'Space Mono', monospace;
+    }
+
+    :root, * {
+      font-family: inherit;
+    }
+
+    [hidden] {
+      display: none;
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    paper-dialog {
+      background: var(--dialog-background-color);
+      color: var(--dialog-color);
+      font-family: var(--dialog-font-family);
+
+      width: 95vw;
+      max-width: 400px;
+      border-radius: 3px;
+    }
+
+    .titlebar {
+      border-radius: 3px 3px 0 0;
+      margin-top: 0 !important;
+      padding: 0 24px;
+      background-color: #2196F3;
+      letter-spacing: 0.1em;
+      background:
+        linear-gradient(30deg, #42A5F5 0%, #1E88E5 60%, transparent 60%, transparent 100%),
+        linear-gradient(160deg, #2196F3 0%, #1E88E5 65%, #2196F3 65%, #42A5F5 100%),
+        linear-gradient(0deg, #2196F3 0%, #42A5F5 100%),
+        #2196F3;
+      transition: background 1s ease-out;
+      color: white;
+    }
+
+    .titlebar [main-title] {
+      font-weight: bold;
+    }
+
+    paper-spinner-lite {
+      --paper-spinner-color: #2196F3;
+      --paper-spinner-stroke-width: 2px;
+    }
+
+    form[is='iron-form'] {
+      background: white;
+    }
+
+    paper-input-container {
+      --paper-input-container-focus-color: #2979FF;
+      --paper-input-container-invalid-color: #FF1744;
+    }
+
+    paper-input-container * {
+      font-family: 'Space Mono' !important;
+    }
+
+    paper-button.login {
+      background: #2196F3;
+      color: white;
+    }
+
+    paper-button.signup {
+      background: white;
+      color: black;
+    }
+
+    #toast {
+      --paper-toast-background-color: #FFEB3B;
+      --paper-toast-color: black;
+      font-family: 'Space Mono', monospace;
+    }
+
+    </style>
+
+    <paper-dialog
+      id="dialog"
+      opened="{{opened}}"
+      modal="[[processing]]"
+      entry-animation="scale-up-animation"
+      exit-animation="fade-out-animation"
+      with-backdrop
+      class="layout vertical">
+
+    <app-toolbar class="titlebar">
+
+      <div
+        main-title
+        hidden="[[signedIn]]">
+        {{localize('login-dialog-greeting')}}
+      </div>
+
+      <div
+        main-title
+        hidden="[[!signedIn]]">
+        Are you sure?
+      </div>
+
+      <paper-icon-button
+        disabled="[[processing]]"
+        dialog-dismiss
+        icon="icons:close"></paper-icon-button>
+
+    </app-toolbar>
+
+    <form
+      is="iron-form"
+      id="frmfrm"
+      class="flex"
+      hidden="[[signedIn]]">
+
+      <paper-input-container auto-validate value="[[email]]">
+        <label>{{localize('email-address')}}</label>
+        <input
+          is="iron-input"
+          type="email"
+          autocomplete="email"
+          autocorrect="off"
+          bind-value="{{email::input}}"
+          invalid="{{emailInvalid}}">
+      </paper-input-container>
+
+      <paper-input-container auto-validate value="[[password]]">
+        <label>{{localize('password')}}</label>
+        <input
+          is="iron-input"
+          type="password"
+          bind-value="{{password::input}}">
+      </paper-input-container>
+
+    </form>
+
+    <div class="layout horizontal">
+
+      <div class="flex"></div>
+
+      <div>
+
+        <paper-button
+          id="signupButton"
+          class="signup"
+          disabled="[[emailInvalid]]"
+          hidden="[[signedIn]]"
+          raised>
+          {{localize('signup')}}
+        </paper-button>
+
+        <paper-button
+          id="loginButton"
+          class="login"
+          disabled="[[emailInvalid]]"
+          hidden="[[signedIn]]"
+          raised>
+          {{localize('login')}}
+        </paper-button>
+
+        <paper-button
+          id="logoutButton"
+          class="logout"
+          disabled="[[emailInvalid]]"
+          hidden="[[!signedIn]]"
+          raised>
+          {{localize('logout')}}
+        </paper-button>
+
+      </div>
+
+    </div>
+
+    </paper-dialog>
+
+    <paper-toast
+      id="toast"
+      always-on-top
+      auto-fit-on-attach
+      dynamic-align></paper-toast>
+
+  </template>
+
+  <script>
+  Polymer({
+    
+    is: 'jmcw-auth-dialog',
+
+    behaviors: [
+      Polymer.AppLocalizeBehavior
+    ],
+
+    properties: {
+      language: {
+        type: String
+      },
+      resources: {
+        type: Object
+      },
+      opened: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
+      caughtError: {
+        type: Object,
+        observer: '_handleCaughtError'
+      }
+    },
+
+    observers: [
+      'clear(signedIn)'
+    ],
+
+    listeners: {
+      'loginButton.tap': '_loginTap',
+      'signupButton.tap': '_signupTap',
+      'logoutButton.tap': '_logoutTap'
+    },
+
+    _loginTap: function() {
+      this._fireAction({
+        actionType: 'login',
+        email: this.get('email'),
+        password: this.get('password')
+      });
+    },
+
+    _signupTap: function() {
+      this._fireAction({
+        actionType: 'signup',
+        email: this.get('email'),
+        password: this.get('password')
+      });
+    },
+
+    _logoutTap: function() {
+      this._fireAction({
+        actionType: 'logout'
+      });
+    },
+
+    _fireAction: function(detail) {
+      this.set('caughtError', null);
+      this.fire('action', detail);
+    },
+
+    _handleCaughtError: function(e) {
+      this.$.toast.text = e ? e.message : "";
+      this.$.toast.opened = !!e;
+    },
+
+    clear: function() {
+      this.set('email', '');
+      this.set('password', '');
+    }
+  });
+  </script>
+
+</dom-module>
