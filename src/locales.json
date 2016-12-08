@@ -1,5 +1,28 @@
 {
   "en-US": {
-    "site-description": "my digital time capsule"
+    "email-address": "Email Address",
+    "footer-msg": "Made with ❤ by Jane",
+    "login-dialog-greeting": "Welcome back!",
+    "login": "Log-in",
+    "logout": "Log-out",
+    "nothing-msg": "Nothing to see here.",
+    "password": "Password",
+    "signup": "Sign-up",
+    "site-description": "my digital time capsule",
+    "site-title": "jmcw.blog",
+    "under-construction": "Under construction."
+  },
+  "zh-HK": {
+    "email-address": "電郵地址",
+    "footer-msg": "多謝到此一遊。",
+    "login-dialog-greeting": "歡迎返嚟！",
+    "login": "登入",
+    "logout": "登出",
+    "nothing-msg": "呢度冇嘢睇。",
+    "password": "密碼",
+    "signup": "註冊",
+    "site-description": "我嘅隨筆",
+    "site-title": "津言堂",
+    "under-construction": "製作中。"
   }
 }
