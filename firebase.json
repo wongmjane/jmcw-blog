@@ -2,6 +2,11 @@
   "database": {},
   "hosting": {
     "public": "build/unbundled",
-    "rewrites": []
+    "rewrites": [
+      {
+        "source": "**/!{*.*}",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
