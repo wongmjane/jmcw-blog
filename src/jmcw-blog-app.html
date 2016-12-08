@@ -2,39 +2,60 @@
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
 <link rel="import" href="../bower_components/platinum-https-redirect/platinum-https-redirect.html">
+
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+
+<link rel="import" href="../bower_components/ga-tracker/ga-tracker.html">
+
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
-<link rel="import" href="../bower_components/ga-tracker/ga-tracker.html">
+<link rel="import" href="jmcw-iconset.html">
+<link rel="import" href="jmcw-auth.html">
 
 <dom-module id="jmcw-blog-app">
+
   <style include="iron-flex"></style>
+
   <template>
+
     <style>
+
       :host {
         display: block;
         font-family: 'Dosis', sans-serif;
       }
+
       :root {
         background: #FAFAFA;
         width: 100%;
         height: 100%;
       }
+
+      * {
+        font-family: inherit;
+      }
+
       .headerbar {
         background: white;
         color: black;
         height: 80px;
       }
-      .headerbar [main-title] {
-        text-align: center;
-      }
+
       .headerbar .logo {
         font-family: 'Space Mono', monospace;
         text-shadow: -1.5px -1.5px 0 #F06292,
@@ -45,58 +66,87 @@
         color: white;
         font-weight: bold;
       }
+
       .headerbar .description {
         font-family: 'Space Mono', monospace;
         font-size: 14px;
         color: #BDBDBD;
         line-height: 1em;
       }
+
       .toolbar {
         background: #00BCD4;
       }
+
+      .toolbar {
+        color: white;
+        font-weight: bold;
+      }
+
       .toolbar div {
         width: 100%;
         text-align: center;
       }
-      .toolbar div a {
-        display: inline-block;
-        color: #E0F7FA;
-        text-decoration: none;
-        padding: 0.125em 0.25em;
-      }
-      .toolbar div a:not(:first-child)::before {
-        display: inline-block;
-        padding-right: 0.25em;
-        content: "·";
-      }
-      .toolbar div a:visited {
-        color: #E0F7FA;
-      }
+
       [content] {
-        padding-top: 2em;
         text-align: center;
-        /*font-size: 2em;*/
         height: 100%;
       }
+
       footer app-toolbar {
-        height: 48px;
+        height: auto;
+        color: white;
+        padding: 0;
+        line-height: 32px;
+        font-family: 'Space Mono', monospace;
+        font-size: 1em;
         background: #E91E63;
         box-shadow: 0 -2px 2px 0 rgba(0, 0, 0, 0.14),
                     0 -1px 5px 0 rgba(0, 0, 0, 0.12),
                     0 -3px 1px -2px rgba(0, 0, 0, 0.2);
       }
-      footer app-toolbar div {
-        width: 100%;
-        text-align: center;
-        color: white;
-        font-family: 'Space Mono', monospace;
-        font-size: 0.75em;
+
+      footer app-toolbar .site-credit {
+        padding: 0 1em;
       }
+
+      .social-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .social-links li paper-button {
+        font-family: inherit;
+        padding: 0;
+        margin: 0 1em;
+      }
+
+      .social-links li a {
+        padding: 0;
+        color: white;
+        text-decoration: none;
+        line-height: 32px;
+      }
+
+      iron-icon {
+        --iron-icon-fill-color: black;
+      }
+
     </style>
 
     <platinum-https-redirect></platinum-https-redirect>
-    <app-location route="{{route}}"></app-location>
-    <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+    <app-location
+      route="{{route}}"
+      query-params="{{queryParams}}"></app-location>
+
+    <app-route
+      route="{{route}}"
+      pattern="/:view"
+      data="{{routeData}}"
+      tail="{{subroute}}"
+      query-params="{{queryParams}}"></app-route>
 
     <firebase-app
       app="{{firebaseApp}}"
@@ -105,38 +155,90 @@
       database-url="https://jmcw-blog.firebaseio.com/"
       name="jmcw-blog"
       storage-bucket="jmcw-blog.appspot.com"></firebase-app>
-    <ga-tracker name="jmcw-blog" key="UA-68121577-6" requires="displayfeatures linkid"></ga-tracker>
+
+    <jmcw-auth
+      firebase-app-name="[[firebaseApp.name]]"
+      firebase-auth-status-known="{{firebaseAuthStatusKnown}}"
+      firebase-user="{{user}}"
+      signed-in="{{signedIn}}"
+      ui-opened="{{authUiOpened}}"
+      ui-language="[[language]]"
+      ui-locale-resources="[[resources]]"></jmcw-auth>
+
+    <ga-tracker
+      name="jmcw-blog"
+      key="UA-68121577-6"
+      requires="displayfeatures linkid"></ga-tracker>
 
     <app-header-layout fullbleed>
 
       <app-header condenses reveals shadow>
-        <app-toolbar class="headerbar">
-          <header main-title>
-            <div class="logo">jmcw.blog</div>
+
+        <app-toolbar class="headerbar horizontal center-justified layout">
+
+          <header class="flex">
+            <div class="logo">{{localize('site-title')}}</div>
             <div class="description">{{localize('site-description')}}</div>
           </header>
+
+          <div>
+
+            <paper-button
+              toggles
+              active="{{authUiOpened}}"
+              hidden$="[[signedIn]]">{{localize('login')}}</paper-button>
+
+            <paper-button
+              toggles
+              active="{{authUiOpened}}"
+              hidden$="[[!signedIn]]">{{localize('logout')}}</paper-button>
+
+          </div>
+
         </app-toolbar>
         <app-toolbar class="toolbar" sticky>
-          <div>
-            <template is="dom-repeat" items="[[links]]"><a href="[[item.href]]" target="_blank">[[item.title]]</a></template>
+
+          <div main-title hidden$="[[signedIn]]">
+            {{localize('nothing-msg')}}
           </div>
+
+          <div main-title hidden$="[[!signedIn]]">
+            Hello [[user.email]]!
+          </div>
+
         </app-toolbar>
       </app-header>
 
-      <div content>
+      <iron-pages content selected="0">
         <p>
-          Under Construction.
+          {{localize("under-construction")}}
         </p>
-      </div>
+      </iron-pages>
 
       <footer>
-        <app-toolbar>
-          <div>
-            Made with ❤ by Jane
-          </div>
+
+        <app-toolbar class="layout horizontal wrap">
+
+          <div class="site-credit flex-auto">{{localize('footer-msg')}}</div>
+
+          <ul class="social-links horizontal layout wrap">
+            <template is="dom-repeat" items="[[links]]">
+              <li>
+                <paper-button>
+                  <a href="[[item.href]]" target="_blank" tabindex="-1">
+                    [[item.title]]
+                  </a>
+                </paper-button>
+              </li>
+            </template>
+          </ul>
+
         </app-toolbar>
+
       </footer>
+
     </app-header-layout>
+
   </template>
 
   <script>
@@ -149,29 +251,28 @@
       ],
 
       properties: {
+
         language: {
           type: String,
           notify: true,
-          value: 'en-US'
+          observer: '_languageChanged'
         },
+
         useKeyIfMissing: {
           type: Boolean,
           value: true
         },
+
         links: {
           type: Array,
           value: [
             {
-              title: "Facebook",
-              href: "https://facebook.com/wongmjane"
+              title: "Github",
+              href: "https://github.com/wongmjane"
             },
             {
               title: "Instagram",
               href: "https://instagram.com/wongmjane"
-            },
-            {
-              title: "Github",
-              href: "https://github.com/wongmjane"
             },
             {
               title: "Twitter",
@@ -179,9 +280,15 @@
             }
           ]
         }
+
+      },
+
+      _languageChanged: function(e) {
+        this.set('queryParams.lang', e);
       },
 
       attached: function() {
+        this.set('language', this.get('queryParams.lang') || 'en-US');
         this.loadResources(this.resolveUrl('locales.json'));
       }
 
