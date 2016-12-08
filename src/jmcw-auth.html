@@ -1,0 +1,153 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="jmcw-auth-dialog.html">
+
+<dom-module id="jmcw-auth">
+
+  <template>
+
+    <firebase-auth
+      id="firebaseAuth"
+      app-name="[[firebaseAppName]]"
+      online="{{isBrowserOnline}}"
+      provider="{{firebaseAuthProvider}}"
+      signed-in="{{signedIn}}"
+      status-known="{{firebaseAuthStatusKnown}}"
+      user="{{firebaseUser}}"></firebase-auth>
+
+    <jmcw-auth-dialog
+      id="dialog"
+      opened="{{uiOpened}}"
+      language="[[uiLanguage]]"
+      resources="[[uiLocaleResources]]"
+      signed-in="[[signedIn]]"></jmcw-auth-dialog>
+
+  </template>
+
+  <script>
+
+  Polymer({
+
+    is: 'jmcw-auth',
+
+    properties: {
+
+      firebaseAppName: {
+        type: String,
+        notify: true
+      },
+
+      firebaseAuthProvider: {
+        type: String,
+        notify: true
+      },
+
+      firebaseAuthStatusKnown: {
+        type: Boolean,
+        notify: true
+      },
+
+      firebaseUser: {
+        type: Object,
+        value: null,
+        notify: true
+      },
+
+      signedIn: {
+        type: Boolean,
+        notify: true
+      },
+
+      uiLanguage: {
+        type: String
+      },
+
+      uiLocaleResources: {
+        type: Object
+      },
+
+      uiOpened: {
+        type: Boolean,
+        notify: true,
+        value: false
+      }
+
+    },
+
+    listeners: {
+      'dialog.action': '_handleDialogAction'
+    },
+
+    _handleDialogAction: function(e, detail) {
+      switch(detail.actionType) {
+
+        case "login":
+          this.signInWithEmailAndPassword(detail.email, detail. password);
+          break;
+
+        case "signup":
+          this.createUserWithEmailAndPassword(detail.email, detail.password);
+          break;
+
+        case "logout":
+          this.signOut();
+          break;
+
+        default:
+          break;
+
+      }
+    },
+
+    signInWithEmailAndPassword: function(email, password) {
+      var that = this;
+
+      this.$.firebaseAuth.signInWithEmailAndPassword(email, password).then(function(ev) {
+        that.set('uiOpened', false);
+      }).catch(function(e) {
+        that._handleFirebaseAuthError(e, that);
+      });
+
+    },
+
+    createUserWithEmailAndPassword: function(email, password) {
+      var that = this;
+
+      this.$.firebaseAuth.createUserWithEmailAndPassword(email, password).then(function(ev) {
+        that.set('uiOpened', false);
+      }).catch(function(e) {
+        that._handleFirebaseAuthError(e, that);
+      });
+      
+    },
+
+    signOut: function() {
+      var that = this;
+      this.$.firebaseAuth.signOut().then(function() {
+        that.set('uiOpened', false);
+      });
+    },
+
+    _handleFirebaseAuthError: function(e, that) {
+      switch (e.code) {
+
+        case "auth/email-already-in-use":
+        case "auth/invalid-email":
+        case "auth/operation-not-allowed":
+        case "auth/user-disabled":
+        case "auth/user-not-found":
+        case "auth/weak-password":
+        case "auth/wrong-password":
+          that.$.dialog.set('caughtError', e);
+          break;
+
+        default:
+          throw new Error("Unexpectd error occured.");
+          break;
+
+      }
+    }
+
+  });
+  </script>
+</dom-module>
